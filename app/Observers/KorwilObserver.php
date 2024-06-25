@@ -6,7 +6,7 @@ use App\Models\Korwil;
 
 class KorwilObserver
 {
-    public function create(Korwil $data)
+    public function creating(Korwil $data)
     {
         $data->id = generateUuid();
     }

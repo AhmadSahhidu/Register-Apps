@@ -7,7 +7,7 @@ use App\Models\User;
 class UserObserver
 {
 
-    public function create(User $data)
+    public function creating(User $data)
     {
         $data->id = generateUuid();
     }

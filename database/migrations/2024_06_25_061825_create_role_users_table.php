@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('korwils', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
-            $table->integer('code')->nullable();
+        Schema::create('role_users', function (Blueprint $table) {
+            $table->id()->primary();
+            $table->uuid('user_id')->nullable();
+            $table->string('role_id')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('korwils');
+        Schema::dropIfExists('role_users');
     }
 };

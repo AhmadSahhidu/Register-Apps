@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Observers\KorwilObserver;
+use App\Observers\RegisterCompetisionObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Korwil extends Model
+class RegisterCompetision extends Model
 {
     use HasFactory;
 
@@ -17,8 +17,14 @@ class Korwil extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'competision_id',
+        'number',
+        'no_session',
         'name',
-        'code',
+        'phone',
+        'address',
+        'photo',
+        'korwil_id'
     ];
     protected $casts = [
         'id' => 'string',
@@ -28,6 +34,6 @@ class Korwil extends Model
     public static function boot(): void
     {
         parent::boot();
-        self::observe(KorwilObserver::class);
+        self::observe(RegisterCompetisionObserver::class);
     }
 }

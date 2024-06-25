@@ -32,47 +32,6 @@
              </div>
          </li>
 
-         <!-- Nav Item - Alerts -->
-         <li class="nav-item dropdown no-arrow mx-1">
-             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 <i class="fas fa-bell fa-fw"></i>
-                 <!-- Counter - Alerts -->
-                 <span class="badge badge-danger badge-counter"></span>
-             </a>
-             <!-- Dropdown - Alerts -->
-             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                 aria-labelledby="alertsDropdown">
-                 <h6 class="dropdown-header">
-                     Permintaan Diskon
-                 </h6>
-                 {{-- @php
-                     $diskon = dataDiskon();
-                 @endphp
-                 @if (notifDiskon() !== '0')
-                     @foreach ($diskon as $items)
-                         <a class="dropdown-item d-flex align-items-center" target="_blank"
-                             href="{{ route('diskon.confirm_diskon', $items->discount_id) }}">
-                             <div class="mr-3">
-                                 <div class="icon-circle bg-primary">
-                                     <i class="fas fa-tag text-white"></i>
-                                 </div>
-                             </div>
-                             <div>
-                                 <div class="small text-gray-500">{{ $items->created_at }}</div>
-                                 <span class="font-weight-bold">{{ $items->description }}</span>
-                             </div>
-                         </a>
-                     @endforeach
-                 @else
-                     <div class="dropdown-item bg-gray-200 text-center py-3">
-                         Tidak Ada Permintaan Diskon
-                     </div>
-                 @endif --}}
-             </div>
-         </li>
-
-
          <div class="topbar-divider d-none d-sm-block"></div>
 
          <!-- Nav Item - User Information -->
@@ -80,8 +39,7 @@
              <div class="nav-link dropdown-toggle" style="align-items: !important center" id="userDropdown"
                  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  <div class="mr-2 d-none d-lg-inline text-gray-600 small">
-                     {{-- <span>Welcome, {{ auth()->user()->name }}</span><br /> --}}
-                     {{-- <span>Cabang : {{ userStore() }}</span> --}}
+                     <span>Welcome, {{ auth()->user()->name }}</span><br />
                  </div>
 
                  <img class="img-profile rounded-circle" src="{{ asset('assets/img/profile.png') }}">

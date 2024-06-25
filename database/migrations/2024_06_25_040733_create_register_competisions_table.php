@@ -11,10 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('korwils', function (Blueprint $table) {
+        Schema::create('register_competisions', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('number')->unique();
+            $table->uuid('competision_id')->nullable();
+            $table->integer('no_session')->default(1);
             $table->string('name');
-            $table->integer('code')->nullable();
+            $table->string('phone');
+            $table->string('address');
+            $table->string('photo')->nullable();
+            $table->uuid('korwil_id')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('korwils');
+        Schema::dropIfExists('register_competisions');
     }
 };

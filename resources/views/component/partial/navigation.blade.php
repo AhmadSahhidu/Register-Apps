@@ -1,5 +1,5 @@
 @php
-    $roleuser = '';
+    $roleuser = userRoleName();
 @endphp
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -8,7 +8,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">KasirKu</div>
+        <div class="sidebar-brand-text mx-3">RegisterApps</div>
     </a>
 
     <!-- Divider -->
@@ -21,7 +21,75 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
+    @if ($roleuser === 'Super Admin' || $roleuser === 'Admin')
+        <li class="nav-item @if (Route::is([
+                'korwil.index',
+                'competision.index',
+                'korwil.create',
+                'korwil.show',
+                'competision.create',
+                'competision.show',
+            ])) active @endif">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Master</span>
+            </a>
+            <div id="collapseTwo" class="collapse @if (Route::is([
+                    'korwil.index',
+                    'korwil.create',
+                    'korwil.show',
+                    'competision.index',
+                    'competision.create',
+                    'competision.show',
+                ])) show @endif"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Master List :</h6>
+                    {{-- @if ($aksesviewMerek || $roleuser === 'Super Admin') --}}
+                    <a class="collapse-item @if (Route::is(['korwil.index', 'korwil.create', 'korwil.show'])) active @endif"
+                        href="{{ route('korwil.index') }}">Korwil</a>
 
+                    <a class="collapse-item @if (Route::is(['competision.index', 'competision.create', 'competision.show'])) active @endif"
+                        href="{{ route('competision.index') }}">Kompetisi / Lomba</a>
+                    {{-- @endif
+                    @if ($aksesviewCategory || $roleuser === 'Super Admin') --}}
+
+                </div>
+            </div>
+        </li>
+    @endif
+    @if ($roleuser === 'Korwil')
+        <li class="nav-item @if (Route::is('register.index')) active @endif">
+            <a class="nav-link" href="{{ route('register.index') }}">
+                <i class="fas fa-fw fa-list"></i>
+                <span>Pendaftaran</span></a>
+        </li>
+    @endif
+    @if ($roleuser === 'Super Admin' || $roleuser === 'Admin')
+        <li class="nav-item @if (Route::is(['roles.index', 'roles.create', 'roles.edit', 'users.index', 'users.create'])) active @endif">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#access"
+                aria-expanded="true" aria-controls="access">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Hak Akses</span>
+            </a>
+            <div id="access" class="collapse @if (Route::is(['roles.index', 'roles.create', 'roles.edit', 'users.index', 'users.create'])) show @endif"
+                aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">List Hak Akses :</h6>
+                    {{-- @if ($aksesviewMerek || $roleuser === 'Super Admin') --}}
+                    <a class="collapse-item @if (Route::is(['roles.index', 'roles.create', 'roles.edit'])) active @endif"
+                        href="{{ route('roles.index') }}">Role User</a>
+
+                    <a class="collapse-item @if (Route::is(['users.index', 'users.create'])) active @endif"
+                        href="{{ route('users.index') }}">Pengguna</a>
+                    {{-- @endif
+                    @if ($aksesviewCategory || $roleuser === 'Super Admin') --}}
+
+                </div>
+            </div>
+        </li>
+    @endif
 
 
     <hr class="sidebar-divider d-none d-md-block">

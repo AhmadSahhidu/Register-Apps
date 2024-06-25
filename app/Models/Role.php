@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Observers\KorwilObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Korwil extends Model
+class Role extends Model
 {
     use HasFactory;
 
@@ -18,16 +17,5 @@ class Korwil extends Model
      */
     protected $fillable = [
         'name',
-        'code',
     ];
-    protected $casts = [
-        'id' => 'string',
-    ];
-
-
-    public static function boot(): void
-    {
-        parent::boot();
-        self::observe(KorwilObserver::class);
-    }
 }
