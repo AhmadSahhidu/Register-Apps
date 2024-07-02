@@ -64,7 +64,7 @@
                 <span>Pendaftaran</span></a>
         </li>
     @endif
-    @if ($roleuser === 'Korwil')
+    @if ($roleuser === 'Korwil' || $roleuser === 'Korda' || $roleuser === 'DPP')
         <li class="nav-item @if (Route::is('register.index')) active @endif">
             <a class="nav-link" href="{{ route('register.index') }}">
                 <i class="fas fa-fw fa-list"></i>
