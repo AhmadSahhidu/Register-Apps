@@ -5,7 +5,7 @@
 @section('content')
     @include('component.partial.alert')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Pendaftaran Kompetisi</h1>
+        <h1 class="h3 mb-0 text-gray-800">Pendaftaran Umum</h1>
     </div>
 
     <div class="card shadow mb-4">
@@ -41,17 +41,11 @@
                                 </td>
                                 <td>
                                     @if ($items->status === 0)
-                                        <a href="{{ route('register.session-register', $items->id) }}"
+                                        <a href="{{ route('register.form_register_umum', $items->id) }}"
                                             class="btn btn-sm btn-success">
                                             Daftar
                                         </a>
-                                        <a href="{{ route('register.request-peserta', $items->id) }}"
-                                            class="btn btn-sm btn-primary">
-                                            Request Tambah Peserta
-                                        </a>
                                     @endif
-
-
                                 </td>
                             </tr>
                         @endforeach

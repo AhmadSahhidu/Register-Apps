@@ -17,7 +17,7 @@
     <!-- Nav Item - Dashboard -->
 
     <li class="nav-item @if (Route::is('dashboard')) active @endif">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{ route('dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -58,6 +58,11 @@
                 </div>
             </div>
         </li>
+        <li class="nav-item @if (Route::is('register.register_umum')) active @endif">
+            <a class="nav-link" href="{{ route('register.register_umum') }}">
+                <i class="fas fa-fw fa-list"></i>
+                <span>Pendaftaran</span></a>
+        </li>
     @endif
     @if ($roleuser === 'Korwil')
         <li class="nav-item @if (Route::is('register.index')) active @endif">
@@ -70,7 +75,7 @@
         <li class="nav-item @if (Route::is(['roles.index', 'roles.create', 'roles.edit', 'users.index', 'users.create'])) active @endif">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#access"
                 aria-expanded="true" aria-controls="access">
-                <i class="fas fa-fw fa-wrench"></i>
+                <i class="fas fa-fw fa-key"></i>
                 <span>Hak Akses</span>
             </a>
             <div id="access" class="collapse @if (Route::is(['roles.index', 'roles.create', 'roles.edit', 'users.index', 'users.create'])) show @endif"

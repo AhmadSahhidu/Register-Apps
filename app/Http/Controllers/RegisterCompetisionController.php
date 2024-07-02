@@ -33,21 +33,23 @@ class RegisterCompetisionController extends Controller
             ]);
             $korwilId = auth()->user()->korwil_id;
             $competision = Competision::where('id', $competisionId)->first();
-            $registerCompetisionSession = RegisterCompetision::where('no_session', $request->session)->where('korwil_id', $korwilId)->count();
+            $registerCompetisionSession = RegisterCompetision::where('competision_id', $competision->id)->where('korwil_id', $korwilId)->count();
+            $spaceKorwil = $competision->count_korwil_per_session * $competision->count_session;
 
-            if ($competision->count_korwil_per_session === $registerCompetisionSession || $registerCompetisionSession > $competision->count_korwil_per_session) {
+            if ($registerCompetisionSession >= $spaceKorwil) {
                 FlashData::danger_alert('Tempat pendaftaran anda sudah penuh');
                 return redirect()->back();
             }
-
+            $userRole = userRoleName();
             RegisterCompetision::create([
                 'number' => 'RCP-' . date('YmdHis'),
                 'competision_id' => $competisionId,
-                'no_session' => $request->session,
+                'no_session' => 0,
+                'no_group' => 1,
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'address' => $request->address,
-                'korwil_id' => $korwilId,
+                'korwil_id' => $userRole === 'Super Admin' ? null : $korwilId,
             ]);
 
             FlashData::success_alert('Berhasil mendaftarkan peserta lomba');

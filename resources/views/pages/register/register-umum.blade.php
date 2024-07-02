@@ -5,7 +5,7 @@
 @section('content')
     @include('component.partial.alert')
     <div class="mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Pendaftaran Kompetisi</h1>
+        <h1 class="h3 mb-0 text-gray-800">Pendaftaran Umum</h1>
 
     </div>
 
@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
                     <p class="text-sm text-info">Silahkan lengkapi form pendaftaran dibawah ini.</p>
-                    <form action="{{ route('register.process-register', $competision->id) }}" method="POST">
+                    <form action="{{ route('register.store_register_umum', $competision->id) }}" method="POST">
                         @csrf
                         @method('POST')
                         <div class="row">
@@ -30,7 +30,15 @@
                                 <span class="text-sm" for="name">No. Handphone</span>
                                 <input type="text" name="phone" class="form-control mt-1" />
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6 mt-2">
+                                <span class="text-sm" for="name">Sesi</span>
+                                <select class="form-control" name="session">
+                                    @for ($i = 0; $i < $competision->count_session; $i++)
+                                        <option value="{{ $i + 1 }}">Sesi {{ $i + 1 }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-md-6 mt-2">
                                 <span class="text-sm" for="name">Alamat</span>
                                 <input type="text" name="address" class="form-control mt-1" />
                             </div>

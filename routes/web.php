@@ -4,8 +4,11 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CompetisionController;
 use App\Http\Controllers\KorwilController;
 use App\Http\Controllers\RegisterCompetisionController;
+use App\Http\Controllers\RegisterCompetisionUmumController;
+use App\Http\Controllers\RequestRegisterCompetisionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\Competision;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,7 +41,14 @@ Route::group(['middleware' => ['auth']], static function () {
         Route::post('store', [CompetisionController::class, 'store'])->name('store');
         Route::get('edit/{competisionId}', [CompetisionController::class, 'edit'])->name('show');
         Route::put('update/{competisionId}', [CompetisionController::class, 'update'])->name('update');
-        // Route::get('delete', [KorwilController::class, 'delete'])->name('delete');
+        Route::get('delete', [CompetisionController::class, 'delete'])->name('delete');
+        Route::get('peserta/{competisionId}', [CompetisionController::class, 'peserta'])->name('list-peserta');
+        Route::get('set-session/{competisionId}', [CompetisionController::class, 'setSessionPeserta'])->name('set_session');
+        Route::get('peserta-tambahan/{competisionId}', [CompetisionController::class, 'pesertaTambahan'])->name('peserta_tambahan');
+        Route::get('import-peserta-gelombang-one/{pesertaId}', [CompetisionController::class, 'importGelombangOne'])->name('import_gelombang_one');
+        Route::get('import-Allpeserta-next-gelombang/{pesertaId}', [CompetisionController::class, 'importAllPesertaTambahan'])->name('import_next_gelombang');
+        Route::get('delete-peserta-tambahan', [CompetisionController::class, 'deletePesertaTambahan'])->name('delete_peserta_tambahan');
+        Route::get('close-register/{competisionId}', [CompetisionController::class, 'closeRegister'])->name('close_register');
     });
 
     Route::prefix('register')->name('register.')->group(function () {
@@ -46,6 +56,12 @@ Route::group(['middleware' => ['auth']], static function () {
         Route::get('session/{competisionId}', [RegisterCompetisionController::class, 'sessionRegister'])->name('session-register');
         Route::post('session/{competisionId}', [RegisterCompetisionController::class, 'process'])->name('process-register');
         Route::get('list-peserta/{competisionId}', [RegisterCompetisionController::class, 'listPeserta'])->name('list-peserta');
+        Route::get('peserta-tambahan/{competisionId}', [RequestRegisterCompetisionController::class, 'formRequest'])->name('request-peserta');
+        Route::post('proses-peserta-tambahan/{competisionId}', [RequestRegisterCompetisionController::class, 'prosesRegisterAdd'])->name('proses-peserta-tambahan');
+
+        Route::get('register-umum', [RegisterCompetisionUmumController::class, 'index'])->name('register_umum');
+        Route::get('form-register-umum/{competisionId}', [RegisterCompetisionUmumController::class, 'create'])->name('form_register_umum');
+        Route::post('store-register-umum/{competisionId}', [RegisterCompetisionUmumController::class, 'store'])->name('store_register_umum');
     });
     Route::prefix('roles')->name('roles.')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('index');

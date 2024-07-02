@@ -53,7 +53,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-save mr-2"></i>Simpan</button>
                     </form>
                 </div>

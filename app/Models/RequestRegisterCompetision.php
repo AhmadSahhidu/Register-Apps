@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Observers\RegisterCompetisionObserver;
+use App\Observers\RequestRegisterCompetisionObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class RegisterCompetision extends Model
+class RequestRegisterCompetision extends Model
 {
     use HasFactory;
 
@@ -19,14 +19,10 @@ class RegisterCompetision extends Model
      */
     protected $fillable = [
         'competision_id',
-        'number',
-        'no_session',
         'name',
         'phone',
         'address',
-        'photo',
         'korwil_id',
-        'no_group'
     ];
     protected $casts = [
         'id' => 'string',
@@ -36,7 +32,7 @@ class RegisterCompetision extends Model
     public static function boot(): void
     {
         parent::boot();
-        self::observe(RegisterCompetisionObserver::class);
+        self::observe(RequestRegisterCompetisionObserver::class);
     }
 
     public function korwil(): BelongsTo
