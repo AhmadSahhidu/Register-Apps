@@ -28,10 +28,10 @@
                         @foreach ($registerCompetision as $index => $items)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $items->name }}</td>
+                                <td>{{ $items->anggota->name }}</td>
                                 <td>Sesi {{ $items->no_session ?? '-' }}</td>
-                                <td>{{ $items->address ?? '-' }}</td>
-                                <td>{{ $items->phone ?? '-' }}</td>
+                                <td>{{ $items->anggota->address ?? '-' }}</td>
+                                <td>{{ $items->anggota->phone ?? '-' }}</td>
                             </tr>
                         @endforeach
 

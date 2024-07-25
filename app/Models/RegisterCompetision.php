@@ -21,6 +21,7 @@ class RegisterCompetision extends Model
         'competision_id',
         'number',
         'no_session',
+        'anggota_id',
         'name',
         'phone',
         'address',
@@ -42,5 +43,10 @@ class RegisterCompetision extends Model
     public function korwil(): BelongsTo
     {
         return $this->belongsTo(Korwil::class, 'korwil_id', 'id');
+    }
+
+    public function anggota(): BelongsTo
+    {
+        return $this->belongsTo(Anggota::class, 'anggota_id', 'id');
     }
 }

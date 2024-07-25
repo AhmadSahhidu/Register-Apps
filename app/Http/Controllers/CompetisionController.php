@@ -94,26 +94,42 @@ class CompetisionController extends Controller
     public function peserta($competisionId)
     {
         $competision = Competision::where('id', $competisionId)->first();
-        $peserta = RegisterCompetision::with('korwil')->where('no_group', 1)->where('competision_id', $competisionId)->get();
+        $dataQuery = RegisterCompetision::query();
+        $dataQuery->select('register_competisions.*', 'anggotas.name as anggota_name', 'anggotas.phone as anggota_phone', 'anggotas.address as anggota_address');
 
+        $dataQuery->join('anggotas', 'anggotas.id', '=', 'register_competisions.anggota_id');
+        $peserta = $dataQuery->get();
         return view('pages.competision.peserta.index', compact('peserta', 'competision'));
     }
 
     public function setSessionPeserta($competisionId)
     {
         $competision = Competision::where('id', $competisionId)->first();
-        $korwil = Korwil::all();
+        $peserta = RegisterCompetision::with('anggota')->where('competision_id', $competision->id)->where('no_group', 1)->get();
 
-        foreach ($korwil as $items) {
-            $pesertaKorwil = RegisterCompetision::where('competision_id', $competision->id)
-                ->where('korwil_id', $items->id)
-                ->where('no_group', 1)
-                ->get();
-            $sessionPesertaChunks = $pesertaKorwil->chunk(4);
+        foreach ($peserta as $items) {
+            // Cek apakah anggota berasal dari korwil atau korda
+            $regionId = null;
+            if ($items->anggota->korwil_id !== null) {
+                $regionId = $items->anggota->korwil_id;
+            } else if ($items->anggota->korda_id !== null) {
+                $regionId = $items->anggota->korda_id;
+            }
 
-            foreach ($sessionPesertaChunks as $sessionNumber => $chunk) {
-                foreach ($chunk as $data) {
-                    RegisterCompetision::where('id', $data->id)->update(['no_session' => $sessionNumber + 1]);
+            if ($regionId !== null) {
+                // Ambil peserta berdasarkan regionId yang dihasilkan dari pengecekan
+                $pesertaRegion = RegisterCompetision::where('competision_id', $competision->id)
+                    ->where('korwil_id', $regionId)
+                    ->where('no_group', 1)
+                    ->get();
+
+                // Bagi peserta ke dalam sesi berdasarkan count_korwil_per_session
+                $sessionPesertaChunks = $pesertaRegion->chunk($competision->count_korwil_per_session);
+
+                foreach ($sessionPesertaChunks as $sessionNumber => $chunk) {
+                    foreach ($chunk as $data) {
+                        RegisterCompetision::where('id', $data->id)->update(['no_session' => $sessionNumber + 1]);
+                    }
                 }
             }
         }
@@ -125,7 +141,7 @@ class CompetisionController extends Controller
     public function pesertaTambahan($competisionId)
     {
         $competision = Competision::where('id', $competisionId)->first();
-        $peserta = RequestRegisterCompetision::with('korwil')->where('competision_id', $competisionId)->get();
+        $peserta = RequestRegisterCompetision::with('korwil', 'anggota')->where('competision_id', $competisionId)->get();
         return view('pages.competision.peserta.peserta-tambahan', compact('peserta', 'competision'));
     }
 
@@ -134,6 +150,11 @@ class CompetisionController extends Controller
         try {
             $peserta = RequestRegisterCompetision::where('id', $pesertaId)->first();
             $competision = Competision::where('id', $peserta->competision_id)->first();
+            $validationPesertaImport = RegisterCompetision::where('competision_id', $peserta->competision_id)->where('korwil_id', $peserta->korwil_id)->where('anggota_id', $peserta->anggota_id)->count();
+            if ($validationPesertaImport > 0) {
+                FlashData::danger_alert('Peserta ini sudah didaftarkan pada gelombang 1');
+                return redirect()->back();
+            }
 
             $saved = false;
             for ($i = 0; $i < $competision->count_session; $i++) {
@@ -153,6 +174,7 @@ class CompetisionController extends Controller
                         'name' => $peserta->name,
                         'phone' => $peserta->phone,
                         'address' => $peserta->address,
+                        'anggota_id' => $peserta->anggota_id,
                         'korwil_id' => $peserta->korwil_id
                     ]);
 
@@ -212,6 +234,7 @@ class CompetisionController extends Controller
                             'name' => $data->name,
                             'phone' => $data->phone,
                             'address' => $data->address,
+                            'anggota_id' => $data->anggota_id,
                             'korwil_id' => $data->korwil_id,
                             'no_group' => $competision->group + 1,
                             'competision_id' => $competisionId,

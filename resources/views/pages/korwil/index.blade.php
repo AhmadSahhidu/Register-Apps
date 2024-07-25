@@ -22,7 +22,6 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Code</th>
                             <th>Name</th>
                             <th>Action</th>
                         </tr>
@@ -31,7 +30,6 @@
                         @foreach ($korwil as $index => $items)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $items->code }}</td>
                                 <td>{{ $items->name ?? '-' }}</td>
                                 <td>
                                     <a href="{{ route('korwil.show', $items->id) }}"
@@ -42,6 +40,10 @@
                                         data-item-id="{{ $items->id }}" title="Hapus Data">
                                         <i class="fa fa-trash"></i>
                                     </button>
+                                    <a href="{{ route('korwil.anggota', $items->id) }}" class="btn btn-sm btn-primary"
+                                        title="Edit Data">
+                                        List Anggota
+                                    </a>
 
                                 </td>
                             </tr>

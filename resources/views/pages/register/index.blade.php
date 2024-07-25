@@ -42,15 +42,19 @@
                                 <td>
                                     @if ($items->status === 0)
                                         <a href="{{ route('register.session-register', $items->id) }}"
-                                            class="btn btn-sm btn-success">
+                                            class="btn btn-sm btn-success mb-2">
                                             Daftar
                                         </a>
                                         <a href="{{ route('register.request-peserta', $items->id) }}"
-                                            class="btn btn-sm btn-primary">
+                                            class="btn btn-sm btn-primary mb-2">
                                             Request Tambah Peserta
                                         </a>
                                     @endif
 
+                                    <a href="{{ route('register.list-peserta', $items->id) }}"
+                                        class="btn btn-sm btn-primary">
+                                        List Peserta Terdaftar
+                                    </a>
 
                                 </td>
                             </tr>

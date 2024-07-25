@@ -3,7 +3,7 @@
     @include('component.partial.alert')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Input Pengguna</h1>
-        <a href="{{ route('roles.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm"><i
+        <a href="{{ route('users.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm"><i
                 class="fas fa-backward fa-sm text-white-50 mr-1"></i> Kembali</a>
     </div>
 
@@ -14,53 +14,43 @@
                     <h6 class="m-0 font-weight-bold text-primary">Form Input</h6>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('users.store') }}" method="POST">
+                    <form action="{{ route('users.update', $user->id) }}" method="POST">
                         @csrf
-                        @method('POST')
+                        @method('PUT')
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="name">Nama Pengguna</label>
-                                    <input class="form-control" name="name" required />
+                                    <input class="form-control" value="{{ $user->name }}" name="name" required />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="name">Username</label>
-                                    <input class="form-control" name="username" required />
+                                    <input class="form-control" name="username" value="{{ $user->username }}" required />
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="name">Password</label>
-                                    <input class="form-control" name="password" required />
+                                    <input type="checkbox" name="cek_setpassword" id="cek-setpassword" />
+                                    <label for="name">Ubah Password</label>
+
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="name">Konfirmasi Password</label>
-                                    <input class="form-control" name="password_confirm" required />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="name">Level User</label>
-                                    <select class="form-control" id="role_id" name="role_id">
-                                        @foreach ($roles as $items)
-                                            <option value="{{ $items->id }}">{{ $items->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6" id="tmpKorwil" style="display: none;">
-                                <div class="form-group">
-                                    <label for="name">Korwil</label>
-                                    <select style="width: 100%" class="form-control" name="korwil_id" id="korwil_id">
-                                        <option value="" disabled selected>Pilih korwil</option>
-                                        @foreach ($korwil as $items)
-                                            <option value="{{ $items->id }}">{{ $items->name }}</option>
-                                        @endforeach
-                                    </select>
+                            <div class="col-md-12 tmp-setpassword" style="display: none">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name">Password</label>
+                                            <input class="form-control" name="password" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name">Konfirmasi Password</label>
+                                            <input class="form-control" name="password_confirm" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +77,16 @@
                 } else {
                     $("#tmpKorwil").hide();
                 }
-            })
+            });
+            $("#cek-setpassword").on('click', function() {
+                var checked = $(this).prop('checked');
+                if (checked) {
+                    $(".tmp-setpassword").show();
+                } else {
+                    $(".tmp-setpassword").hide();
+                }
+            });
+
         });
     </script>
 @endpush

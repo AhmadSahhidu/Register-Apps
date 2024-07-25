@@ -63,6 +63,17 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6" id="tmpKorda" style="display: none;">
+                                <div class="form-group">
+                                    <label for="name">Korda</label>
+                                    <select style="width: 100%" class="form-control" name="korda_id" id="korda_id">
+                                        <option value="" disabled selected>Pilih Korda</option>
+                                        @foreach ($korda as $items)
+                                            <option value="{{ $items->id }}">{{ $items->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-save mr-2"></i>Simpan</button>
@@ -84,8 +95,14 @@
                 var roles = $(this).val();
                 if (roles === '3') {
                     $("#tmpKorwil").show();
+                    $("#tmpKorda").hide();
+                } else if (roles === '4') {
+                    $("#tmpKorwil").hide();
+                    $("#tmpKorda").show();
                 } else {
                     $("#tmpKorwil").hide();
+                    $("#tmpKorda").hide();
+
                 }
             })
         });

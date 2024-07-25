@@ -36,7 +36,7 @@
                                 <td>{{ $items->username ?? '-' }}</td>
                                 <td>{{ $items->roles->name ?? '-' }}</td>
                                 <td>
-                                    <a href="{{ route('roles.edit', $items->id) }}"
+                                    <a href="{{ route('users.edit', $items->id) }}"
                                         class="btn btn-sm btn-circle btn-primary" title="Edit Data">
                                         <i class="fa fa-pen"></i>
                                     </a>
@@ -71,10 +71,10 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "{{ route('roles.delete') }}",
+                            url: "{{ route('users.delete') }}",
                             type: 'GET',
                             data: {
-                                roleId: itemId
+                                userId: itemId
                             },
                             success: function() {
                                 Swal.fire({

@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CompetisionController;
+use App\Http\Controllers\KordaController;
 use App\Http\Controllers\KorwilController;
 use App\Http\Controllers\RegisterCompetisionController;
 use App\Http\Controllers\RegisterCompetisionUmumController;
@@ -28,11 +30,31 @@ Route::group(['middleware' => ['auth']], static function () {
 
     Route::prefix('korwil')->name('korwil.')->group(function () {
         Route::get('/', [KorwilController::class, 'index'])->name('index');
+        Route::get('anggota/{korwilId}', [KorwilController::class, 'anggotaKorwil'])->name('anggota');
         Route::get('create', [KorwilController::class, 'create'])->name('create');
         Route::post('create', [KorwilController::class, 'store'])->name('store');
         Route::get('edit/{korwilId}', [KorwilController::class, 'show'])->name('show');
         Route::put('update/{korwilId}', [KorwilController::class, 'update'])->name('update');
         Route::get('delete', [KorwilController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('korda')->name('korda.')->group(function () {
+        Route::get('/', [KordaController::class, 'index'])->name('index');
+        Route::get('anggota/{kordaId}', [KordaController::class, 'anggotaKorda'])->name('anggota');
+        Route::get('create', [KordaController::class, 'create'])->name('create');
+        Route::post('create', [KordaController::class, 'store'])->name('store');
+        Route::get('edit/{korwilId}', [KordaController::class, 'show'])->name('show');
+        Route::put('update/{korwilId}', [KordaController::class, 'update'])->name('update');
+        Route::get('delete', [KordaController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('anggota')->name('anggota.')->group(function () {
+        Route::get('/', [AnggotaController::class, 'index'])->name('index');
+        Route::get('create', [AnggotaController::class, 'create'])->name('create');
+        Route::post('store', [AnggotaController::class, 'store'])->name('store');
+        Route::get('edit/{anggotaId}', [AnggotaController::class, 'edit'])->name('edit');
+        Route::put('update/{anggotaId}', [AnggotaController::class, 'update'])->name('update');
+        Route::get('delete', [AnggotaController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('competision')->name('competision.')->group(function () {
@@ -76,8 +98,8 @@ Route::group(['middleware' => ['auth']], static function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('create', [UserController::class, 'create'])->name('create');
         Route::post('store', [UserController::class, 'store'])->name('store');
-        // Route::get('edit/{roleId}', [RoleController::class, 'edit'])->name('edit');
-        // Route::put('update/{roleId}', [RoleController::class, 'update'])->name('update');
-        // Route::get('delete', [RoleController::class, 'delete'])->name('delete');
+        Route::get('edit/{userId}', [UserController::class, 'edit'])->name('edit');
+        Route::put('update/{userId}', [UserController::class, 'update'])->name('update');
+        Route::get('delete', [UserController::class, 'usersDelete'])->name('delete');
     });
 });

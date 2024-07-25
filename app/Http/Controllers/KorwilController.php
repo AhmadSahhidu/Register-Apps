@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\FlashData;
+use App\Models\Anggota;
 use App\Models\Korwil;
 use Illuminate\Http\Request;
 
@@ -70,5 +71,12 @@ class KorwilController extends Controller
     {
         $korwilId = $request->korwilId;
         Korwil::where('id', $korwilId)->delete();
+    }
+
+    public function anggotaKorwil($korwilId)
+    {
+        $anggota = Anggota::with('korwil')->where('korwil_id', $korwilId)->get();
+
+        return view('pages.anggota.korwil.index', compact('anggota'));
     }
 }

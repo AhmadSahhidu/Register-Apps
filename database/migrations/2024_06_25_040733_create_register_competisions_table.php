@@ -16,11 +16,12 @@ return new class extends Migration
             $table->string('number')->unique();
             $table->uuid('competision_id')->nullable();
             $table->integer('no_session')->default(1);
-            $table->string('name');
-            $table->string('phone');
-            $table->string('address');
+            $table->string('name')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->string('photo')->nullable();
             $table->uuid('korwil_id')->nullable();
+            $table->uuid('anggota_id')->nullable();
             $table->timestamps();
         });
     }

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('request_register_competisions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('competision_id');
-            $table->string('name');
+            $table->uuid('anggota_id')->nullable();
+            $table->string('name')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->uuid('korwil_id')->nullable();

@@ -32,9 +32,9 @@
                         @foreach ($peserta as $index => $items)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $items->name }}</td>
-                                <td>{{ $items->address ?? '-' }}</td>
-                                <td>{{ $items->phone ?? '-' }}</td>
+                                <td>{{ $items->anggota_id ? $items->anggota->name : $items->name }}</td>
+                                <td>{{ $items->anggota_id ? $items->anggota->phone : $items->phone ?? '-' }}</td>
+                                <td>{{ $items->anggota_id ? $items->anggota->address : $items->address ?? '-' }}</td>
                                 <td>{{ $items->korwil->name ?? 'Umum' }}</td>
                                 <td>
                                     <a href="{{ route('competision.import_gelombang_one', $items->id) }}"

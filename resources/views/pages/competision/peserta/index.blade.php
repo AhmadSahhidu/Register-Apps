@@ -71,27 +71,30 @@
                                     <th>Nama Lengkap</th>
                                     <th>No Handphone</th>
                                     <th>Alamat</th>
-                                    <th>Korwil</th>
-                                    <th>Action</th>
+                                    <th>Anggota</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php
-                                    $pesertaSesi = RegisterCompetision::where('no_session', 0)
-                                        ->where('no_group', 1)
-                                        ->where('competision_id', $competision->id)
-                                        ->get();
+
                                 @endphp
-                                @foreach ($pesertaSesi as $index => $items)
+                                @foreach ($peserta as $index => $items)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $items->name }}</td>
-                                        <td>{{ $items->phone ?? '-' }}</td>
-                                        <td>{{ $items->address ?? '-' }}</td>
-                                        <td>Korwil {{ $items->korwil->name ?? 'Umum' }}</td>
-                                        <td>
-
+                                        <td>{{ $items->anggota_name ?? '-' }}</td>
+                                        <td>{{ $items->anggota_phone ?? '-' }}</td>
+                                        <td>{{ $items->anggota_address ?? '-' }}
                                         </td>
+                                        <td>
+                                            @if ($items->anggota?->korwil_id !== null)
+                                                {{ $items->anggota?->korwil->name ?? '-' }}
+                                            @elseif ($items->anggota?->korda_id !== null)
+                                                {{ $items->anggota?->korda->name ?? '-' }}
+                                            @else
+                                                Peserta Umum
+                                            @endif
+                                        </td>
+
                                     </tr>
                                 @endforeach
 
@@ -119,12 +122,12 @@
                                         <th>No Handphone</th>
                                         <th>Alamat</th>
                                         <th>Korwil</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
-                                        $pesertaSesi = RegisterCompetision::where('no_session', $i + 1)
+                                        $pesertaSesi = RegisterCompetision::with('anggota')
+                                            ->where('no_session', $i + 1)
                                             ->where('no_group', 1)
                                             ->where('competision_id', $competision->id)
                                             ->get();
@@ -132,13 +135,13 @@
                                     @foreach ($pesertaSesi as $index => $items)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ $items->name }}</td>
-                                            <td>{{ $items->phone ?? '-' }}</td>
-                                            <td>{{ $items->address ?? '-' }}</td>
-                                            <td>Korwil {{ $items->korwil->name ?? 'Umum' }}</td>
-                                            <td>
-
+                                            <td>{{ $items->anggota_id ? $items->anggota->name : $items->name }}</td>
+                                            <td>{{ $items->anggota_id ? $items->anggota->phone : $items->phone ?? '-' }}
                                             </td>
+                                            <td>{{ $items->anggota_id ? $items->anggota->address : $items->address ?? '-' }}
+                                            </td>
+                                            <td>Korwil {{ $items->korwil->name ?? 'Umum' }}</td>
+
                                         </tr>
                                     @endforeach
 
