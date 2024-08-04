@@ -67,6 +67,11 @@
                 <i class="fas fa-fw fa-list"></i>
                 <span>Pendaftaran</span></a>
         </li>
+        <li class="nav-item @if (Route::is('register.register_umum')) active @endif">
+            <a class="nav-link" href="{{ route('register.register_umum') }}">
+                <i class="fas fa-fw fa-money-bill"></i>
+                <span>Pembayaran</span></a>
+        </li>
     @endif
     @if ($roleuser === 'Korwil' || $roleuser === 'Korda' || $roleuser === 'DPP')
         <li class="nav-item @if (Route::is('register.index')) active @endif">

@@ -82,9 +82,20 @@ class RegisterCompetisionController extends Controller
 
     public function listPeserta($competisionId)
     {
-        $korwilId = auth()->user()->korwil_id;
+        $userRole = userRoleName();
+        if ($userRole === 'Korda') {
+            $korwilId = auth()->user()->korda_id;
+        } else {
+            $korwilId = auth()->user()->korwil_id;
+        }
         $competision = Competision::where('id', $competisionId)->first();
-        $registerCompetision = RegisterCompetision::with('anggota')->where('competision_id', $competision->id)->where('korwil_id', $korwilId)->orderBy('no_session', 'ASC')->get();
+        $dataQuery = RegisterCompetision::query();
+        $dataQuery->select('register_competisions.*', 'anggotas.name as anggota_name', 'anggotas.phone as anggota_phone', 'anggotas.address as anggota_address');
+        $dataQuery->join('anggotas', 'anggotas.id', '=', 'register_competisions.anggota_id');
+        $dataQuery->where('register_competisions.competision_id', $competision->id);
+        $dataQuery->where('register_competisions.korwil_id', $korwilId);
+        $dataQuery->orderBy('register_competisions.no_session', 'ASC');
+        $registerCompetision = $dataQuery->get();
 
         return view('pages.register.list-peserta', compact('competision', 'registerCompetision'));
     }

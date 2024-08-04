@@ -72,6 +72,7 @@
                                     <th>No Handphone</th>
                                     <th>Alamat</th>
                                     <th>Anggota</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -94,7 +95,12 @@
                                                 Peserta Umum
                                             @endif
                                         </td>
-
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-circle btn-danger btnDelete"
+                                                data-item-id="{{ $items->id }}" title="Hapus Data">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 @endforeach
 
@@ -126,21 +132,41 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                        $pesertaSesi = RegisterCompetision::with('anggota')
-                                            ->where('no_session', $i + 1)
-                                            ->where('no_group', 1)
-                                            ->where('competision_id', $competision->id)
-                                            ->get();
+                                        $dataQuery = RegisterCompetision::query();
+                                        $dataQuery->select(
+                                            'register_competisions.*',
+                                            'anggotas.name as anggota_name',
+                                            'anggotas.phone as anggota_phone',
+                                            'anggotas.address as anggota_address',
+                                        );
+                                        $dataQuery->join(
+                                            'anggotas',
+                                            'anggotas.id',
+                                            '=',
+                                            'register_competisions.anggota_id',
+                                        );
+                                        $dataQuery->where('register_competisions.no_session', $i + 1);
+                                        $dataQuery->where('register_competisions.no_group', 1);
+                                        $dataQuery->where('register_competisions.competision_id', $competision->id);
+
+                                        $pesertaSesi = $dataQuery->get();
                                     @endphp
                                     @foreach ($pesertaSesi as $index => $items)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ $items->anggota_id ? $items->anggota->name : $items->name }}</td>
-                                            <td>{{ $items->anggota_id ? $items->anggota->phone : $items->phone ?? '-' }}
+                                            <td>{{ $items->anggota_name ?? '-' }}</td>
+                                            <td>{{ $items->anggota_phone ?? '-' }}</td>
+                                            <td>{{ $items->anggota_address ?? '-' }}
                                             </td>
-                                            <td>{{ $items->anggota_id ? $items->anggota->address : $items->address ?? '-' }}
+                                            <td>
+                                                @if ($items->anggota?->korwil_id !== null)
+                                                    {{ $items->anggota?->korwil->name ?? '-' }}
+                                                @elseif ($items->anggota?->korda_id !== null)
+                                                    {{ $items->anggota?->korda->name ?? '-' }}
+                                                @else
+                                                    Peserta Umum
+                                                @endif
                                             </td>
-                                            <td>Korwil {{ $items->korwil->name ?? 'Umum' }}</td>
 
                                         </tr>
                                     @endforeach
@@ -164,7 +190,7 @@
             $("#dataTable-2").DataTable();
             $("#dataTable-3").DataTable();
             $("#dataTable-4").DataTable();
-            $('.btnDelete').on('click', function() {
+            $(document).on('click', '.btnDelete', function() {
                 var itemId = $(this).data('item-id');
                 Swal.fire({
                     icon: 'question',
@@ -174,10 +200,10 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "{{ route('competision.delete') }}",
+                            url: "{{ route('competision.delete_peserta') }}",
                             type: 'GET',
                             data: {
-                                competisionId: itemId
+                                pesertaId: itemId
                             },
                             success: function() {
                                 Swal.fire({

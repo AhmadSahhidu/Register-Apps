@@ -61,7 +61,7 @@
     <script src="{{ asset('./assets/js/demo/datatables-demo.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('.btnDelete').on('click', function() {
+            $(document).on('click', '.btnDelete', function() {
                 var itemId = $(this).data('item-id');
                 Swal.fire({
                     icon: 'question',
@@ -87,14 +87,15 @@
                             error: function() {
                                 Swal.fire({
                                     title: "Failed!",
-                                    text: "Anda kesalahan saat menghapus data.",
+                                    text: "Terjadi kesalahan saat menghapus data.",
                                     icon: "error"
                                 });
                             }
-                        })
+                        });
                     }
                 });
-            })
+            });
+
         })
     </script>
 @endpush

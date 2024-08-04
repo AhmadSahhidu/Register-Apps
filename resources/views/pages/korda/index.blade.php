@@ -60,7 +60,7 @@
     <script src="{{ asset('./assets/js/demo/datatables-demo.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('.btnDelete').on('click', function() {
+            $(document).on('click', '.btnDelete', function() {
                 var itemId = $(this).data('item-id');
                 Swal.fire({
                     icon: 'question',
@@ -93,7 +93,40 @@
                         })
                     }
                 });
-            })
+            });
+
+            var itemId = $(this).data('item-id');
+            Swal.fire({
+                icon: 'question',
+                title: "Apakah anda akan menghapus data ini?",
+                showCancelButton: true,
+                confirmButtonText: "Ya",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('korda.delete') }}",
+                        type: 'GET',
+                        data: {
+                            kordaId: itemId
+                        },
+                        success: function() {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Anda berhasil menghapus data.",
+                                icon: "success"
+                            });
+                            window.location.reload();
+                        },
+                        error: function() {
+                            Swal.fire({
+                                title: "Failed!",
+                                text: "Anda kesalahan saat menghapus data.",
+                                icon: "error"
+                            });
+                        }
+                    })
+                }
+            });
         })
     </script>
 @endpush

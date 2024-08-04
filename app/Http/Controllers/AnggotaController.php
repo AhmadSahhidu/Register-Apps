@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Helpers\FlashData;
 use App\Models\Anggota;
 use App\Models\Korwil;
+use App\Models\RegisterCompetision;
+use App\Models\RequestRegisterCompetision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,11 +17,13 @@ class AnggotaController extends Controller
         $userRole = userRoleName();
         if ($userRole === 'Korda') {
             $kordaId = auth()->user()->korda_id;
-            $anggota = Anggota::with('korwil', 'korda')->where('korda_id', $kordaId)->get();
+            $anggota = Anggota::with('korda')->where('korda_id', $kordaId)->get();
         } else {
             $korwilId = auth()->user()->korwil_id;
-            $anggota = Anggota::with('korwil', 'korda')->where('korwil_id', $korwilId)->get();
+            $anggota = Anggota::with('korwil')->where('korwil_id', $korwilId)->get();
         }
+        error_log('anggota: ' . $korwilId);
+
         return view('pages.anggota.index', compact('anggota'));
     }
 
@@ -120,8 +124,10 @@ class AnggotaController extends Controller
     {
         $anggotaId = $request->anggotaId;
         $anggota = Anggota::where('id', $anggotaId)->first();
-
+        RegisterCompetision::where('anggota_id', $anggota->id)->delete();
         Storage::disk('public')->delete($anggota->photo);
+        RequestRegisterCompetision::where('anggota_id', $anggota->id)->delete();
+
         Anggota::where('id', $anggota->id)->delete();
     }
 }

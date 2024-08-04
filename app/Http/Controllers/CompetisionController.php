@@ -141,7 +141,11 @@ class CompetisionController extends Controller
     public function pesertaTambahan($competisionId)
     {
         $competision = Competision::where('id', $competisionId)->first();
-        $peserta = RequestRegisterCompetision::with('korwil', 'anggota')->where('competision_id', $competisionId)->get();
+        $dataQuery = RequestRegisterCompetision::query();
+        $dataQuery->select('request_register_competisions.*', 'anggotas.name as anggota_name', 'anggotas.phone as anggota_phone', 'anggotas.address as anggota_address');
+
+        $dataQuery->join('anggotas', 'anggotas.id', '=', 'request_register_competisions.anggota_id');
+        $peserta = $dataQuery->get();
         return view('pages.competision.peserta.peserta-tambahan', compact('peserta', 'competision'));
     }
 
@@ -210,6 +214,13 @@ class CompetisionController extends Controller
     public function deletePesertaTambahan(Request $request)
     {
         RequestRegisterCompetision::where('id', $request->pesertaId)->delete();
+        FlashData::success_alert('Berhasil menghapus data peserta');
+        return redirect()->back();
+    }
+
+    public function deletePeserta(Request $request)
+    {
+        RegisterCompetision::where('id', $request->pesertaId)->delete();
         FlashData::success_alert('Berhasil menghapus data peserta');
         return redirect()->back();
     }

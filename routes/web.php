@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth']], static function () {
         Route::get('import-peserta-gelombang-one/{pesertaId}', [CompetisionController::class, 'importGelombangOne'])->name('import_gelombang_one');
         Route::get('import-Allpeserta-next-gelombang/{pesertaId}', [CompetisionController::class, 'importAllPesertaTambahan'])->name('import_next_gelombang');
         Route::get('delete-peserta-tambahan', [CompetisionController::class, 'deletePesertaTambahan'])->name('delete_peserta_tambahan');
+        Route::get('delete-peserta', [CompetisionController::class, 'deletePeserta'])->name('delete_peserta');
         Route::get('close-register/{competisionId}', [CompetisionController::class, 'closeRegister'])->name('close_register');
     });
 
